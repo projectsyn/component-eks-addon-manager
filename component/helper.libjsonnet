@@ -16,7 +16,7 @@ local fix_registry_region(container) =
   };
 
 local image(component) =
-  local imagever = addon_version_map[component];
+  local imagever = addon_version_map[component].tag;
   "%s/%s:%s" % [eks_registry, addon_image_names[component], imagever];
 
 // Create a patch to update the container image on a DaemonSet or Deployment

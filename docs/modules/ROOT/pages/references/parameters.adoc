@@ -6,9 +6,63 @@ The parent key for all of the following parameters is `eks_addon_manager`.
 
 [horizontal]
 type:: string
-default:: `syn-eks-addon-manager`
+default:: `${resource_locker:namespace}`
 
 The namespace in which to deploy this component.
+The ResourceLocker objects managed by this component must exist in the same namespace as the resource-locker-operator.
+
+== `upstream_registry_region`
+
+[horizontal]
+type:: string
+default:: `us-west-2`
+
+Region which is used for the container images in the upstream aws-k8s-cni manifests.
+
+== `image_names.coredns`
+
+[horizontal]
+type:: string
+default:: `eks/coredns`
+
+Container image name (including path) for CoreDNS in the EKS registry.
+
+== `image_names.kube-proxy`
+
+[horizontal]
+type:: string
+default:: `eks/kube-proxy`
+
+Container image name (including path) for kube-proxy in the EKS registry.
+
+== `image_names.aws-node`
+
+[horizontal]
+type:: string
+default:: `amazon-k8s-cni`
+
+Container image name for the AWS VPC CNI
+
+== `versions`
+
+[horizontal]
+type:: dict
+keys:: addon names
+values:: Default version of addon for cluster's EKS version
+
+Versions to use for the different addons.
+Keys in the `versions` dict are the addon names.
+Entries have keys `tag` (required) and `version` optional, which default to the corresponding fields for the cluster's EKS version in `version_map`.
+
+== `version_map`
+
+[horizontal]
+type:: dict
+keys:: addon names
+values:: dict mapping EKS version to addon tag and version
+
+Default addon tags (required) and versions (optional) indexed by EKS version.
+Changes in `version_map` should only be done in `class/defaults.yml` of the component.
 
 
 == Example
