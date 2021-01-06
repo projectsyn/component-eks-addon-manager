@@ -14,12 +14,12 @@ parameters:
     # Versions to use for each component
     versions:
       coredns:
-        tag: '${eks_addon_manager:version_map:coredns:${eks:version}:tag}'
+        tag: '${eks_addon_manager:version_map:coredns:${facts:eks_version}:tag}'
       kube-proxy:
-        tag: '${eks_addon_manager:version_map:kube-proxy:${eks:version}:tag}'
+        tag: '${eks_addon_manager:version_map:kube-proxy:${facts:eks_version}:tag}'
       aws-k8s-cni:
-        tag: '${eks_addon_manager:version_map:aws-k8s-cni:${eks:version}:tag}'
-        version: '${eks_addon_manager:version_map:aws-k8s-cni:${eks:version}:version}'
+        tag: '${eks_addon_manager:version_map:aws-k8s-cni:${facts:eks_version}:tag}'
+        version: '${eks_addon_manager:version_map:aws-k8s-cni:${facts:eks_version}:version}'
 
     # Default versions per EKS version
     version_map:
