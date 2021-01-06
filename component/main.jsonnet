@@ -1,7 +1,7 @@
+local helper = import 'helper.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
 local resourcelocker = import 'lib/resource-locker.libjsonnet';
-local helper = import 'helper.libjsonnet';
 
 // Define kube-proxy target object as partial DaemonSet manifest.
 local kubeproxy = kube.DaemonSet('kube-proxy') {

@@ -1,6 +1,6 @@
+local helper = import 'helper.libjsonnet';
 local kap = import 'lib/kapitan.libjsonnet';
 local kube = import 'lib/kube.libjsonnet';
-local helper = import 'helper.libjsonnet';
 local inv = kap.inventory();
 local params = inv.parameters.eks_addon_manager;
 
@@ -16,15 +16,15 @@ local patch_cni_ds_image(objs) = [
       helper.fix_registry_region(c)
       for c in obj.spec.template.spec.initContainers
     ];
-    obj + {
+    obj {
       spec+: {
         template+: {
           spec+: {
             containers: containers,
             initContainers: init_containers,
-          }
-        }
-      }
+          },
+        },
+      },
     }
   else
     obj
@@ -47,7 +47,9 @@ local eks_cni_locker_sa = kube.ServiceAccount('eks-cni-manager') {
 
 // find ClusterRole object in EKS CNI manifests
 local eks_cni_clusterrole = [
-  obj for obj in eks_cni_objs if obj.kind == 'ClusterRole'
+  obj
+  for obj in eks_cni_objs
+  if obj.kind == 'ClusterRole'
 ][0];
 
 // apigroup extraction helper
@@ -75,7 +77,8 @@ local kindresourcelist =
       [g]+: {
         resources+: rule.resources,
         verbs+: rule.verbs,
-      } for g in rule.apiGroups
+      }
+      for g in rule.apiGroups
     }
     for rule in eks_cni_clusterrole.rules
   ];
@@ -86,14 +89,15 @@ local kindresourcelist =
 local kindresources = std.foldl(
   function(prev, o) prev + o,
   kindresourcelist,
-  {});
+  {}
+);
 
 local eks_cni_locker_clusterrole =
   // ResourceLocker needs the following verbs to create&update resources
   // Note: we explicitly do not grant delete to the service account used by
   // resource-locker-operator. This ensures that the EKS CNI resources cannot
   // be deleted if the ResourceLocker object is deleted.
-  local baseverbs = ['list', 'watch', 'create', 'get', 'update', 'patch'];
+  local baseverbs = [ 'list', 'watch', 'create', 'get', 'update', 'patch' ];
   // merge with potential other verbs for resources that are required due to
   // resourcelocker having to create a ClusterRole
   local groupverbs(g) = std.set(
@@ -103,16 +107,17 @@ local eks_cni_locker_clusterrole =
   kube.ClusterRole('eks-cni-manager') {
     rules+: [
       {
-        apiGroups: [group],
+        apiGroups: [ group ],
         resources: kindresources[group].resources,
         verbs: groupverbs(kindresources[group]),
-      } for group in std.objectFields(kindresources)
+      }
+      for group in std.objectFields(kindresources)
     ],
   };
 
 local eks_cni_locker_clusterrolebinding =
   kube.ClusterRoleBinding('eks-cni-manager') {
-    subjects_: [eks_cni_locker_sa],
+    subjects_: [ eks_cni_locker_sa ],
     roleRef_: eks_cni_locker_clusterrole,
   };
 
@@ -128,7 +133,7 @@ local eks_cni_locker = [
       serviceAccountRef: {
         name: eks_cni_locker_sa.metadata.name,
       },
-      resources: [{
+      resources: [ {
         excludedPaths: [
           '.metadata',
           '.status',
