@@ -1,6 +1,10 @@
 # Commodore Component: eks-addon-manager
 
-This is a [Commodore][commodore] Component for eks-addon-manager.
+This is a [Commodore][commodore] Component to manage EKS addon versions.
+
+EKS "addons" are components which are deployed when a cluster is initially installed (e.g.  kube-proxy and coredns) but which are not upgraded automatically when the EKS control plane is upgraded.
+
+This component requires the [resource-locker-operator component] to manage the addon versions.
 
 This repository is part of Project Syn.
 For documentation on Project Syn and this component, see https://syn.tools.
@@ -23,3 +27,4 @@ For information about how to contribute see [CONTRIBUTING](CONTRIBUTING.md).
 [commodore]: https://docs.syn.tools/commodore/index.html
 [asciidoc]: https://asciidoctor.org/
 [antora]: https://antora.org/
+[resource-locker-operator component]: https://github.com/projectsyn/component-resource-locker
