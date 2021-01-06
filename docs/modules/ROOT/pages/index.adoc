@@ -1,0 +1,5 @@
+= eks-addon-manager
+
+eks-addon-manager is a Commodore component to manage eks-addon-manager.
+
+See the xref:references/parameters.adoc[parameters] reference for further details.

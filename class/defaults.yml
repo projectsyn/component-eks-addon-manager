@@ -1,0 +1,3 @@
+parameters:
+  eks_addon_manager:
+    namespace: syn-eks-addon-manager
