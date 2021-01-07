@@ -1,5 +1,18 @@
 = eks-addon-manager
 
-eks-addon-manager is a Commodore component to manage eks-addon-manager.
+eks-addon-manager is a Commodore component to manage EKS addons.
+
+EKS "addons" are components which are deployed when a cluster is initially installed (kube-proxy, CoreDNS, and the AWS VPC CNI) but which aren't upgraded automatically when the EKS control plane is upgraded.
+
+This component requires the [resource-locker-operator component] to manage the addon versions.
+
+The component requires that the Lieutenant object of the cluster has a fact `eks_version` which is set to the current EKS version of the cluster.
+
+This fact can be set on a cluster object with
+
+[source,bash]
+----
+kubectl -n lieutenant patch cluster c-cluster --type=merge -p '{"spec":{"facts":{"eks_version": "1.18"}}}'
+----
 
 See the xref:references/parameters.adoc[parameters] reference for further details.

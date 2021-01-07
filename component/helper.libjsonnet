@@ -1,0 +1,42 @@
+local kap = import 'lib/kapitan.libjsonnet';
+local inv = kap.inventory();
+local params = inv.parameters.eks_addon_manager;
+local addon_version_map = params.versions;
+local addon_image_names = params.image_names;
+local aws_region = inv.parameters.facts.region;
+local upstream_region = params.upstream_registry_region;
+
+// 602401143452 appears to be the account id of the AWS-managed EKS ECR registry account.
+local eks_registry = '602401143452.dkr.ecr.%s.amazonaws.com' % [ aws_region ];
+
+// Replace the container's image registry with the clusters's AWS region
+local fix_registry_region(container) =
+  container {
+    image: std.strReplace(container.image, upstream_region, aws_region),
+  };
+
+local image(component) =
+  local imagever = addon_version_map[component].tag;
+  '%s/%s:%s' % [ eks_registry, addon_image_names[component], imagever ];
+
+// Create a patch to update the container image on a DaemonSet or Deployment
+// (or any other resource which has the spec.template.spec.containers
+// structure).
+local imgver_patch(component) =
+  {
+    spec: {
+      template: {
+        spec: {
+          containers: [ {
+            name: component,
+            image: image(component),
+          } ],
+        },
+      },
+    },
+  };
+
+{
+  fix_registry_region: fix_registry_region,
+  imgver_patch: imgver_patch,
+}

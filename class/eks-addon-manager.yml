@@ -1,5 +1,9 @@
 parameters:
   kapitan:
+    dependencies:
+      - type: https
+        source: https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/${eks_addon_manager:versions:aws-k8s-cni:tag}/config/${eks_addon_manager:versions:aws-k8s-cni:version}/aws-k8s-cni.yaml
+        output_path: dependencies/eks-addon-manager/manifests/aws-k8s-cni.yaml
     compile:
       - input_paths:
           - eks-addon-manager/component/app.jsonnet
@@ -9,4 +13,3 @@ parameters:
           - eks-addon-manager/component/main.jsonnet
         input_type: jsonnet
         output_path: eks-addon-manager/
-
