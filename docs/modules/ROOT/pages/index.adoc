@@ -12,7 +12,7 @@ This fact can be set on a cluster object with
 
 [source,bash]
 ----
-kubectl -n lieutenant patch cluster c-cluster --type=merge -p '{"spec":{"facts":{"eks_version": "1.18"}}}'
+kubectl -n lieutenant patch cluster c-cluster --type=merge -p '{"spec":{"facts":{"eks_version": "1.19"}}}'
 ----
 
 See the xref:references/parameters.adoc[parameters] reference for further details.
