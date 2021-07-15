@@ -1,0 +1,51 @@
+== Migrate to Amazon EKS add-ons
+
+Beginning with Kubernetes version 1.18 Amazon EKS started providing https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html[add-ons] for EKS specific Kubernetes components like https://docs.aws.amazon.com/eks/latest/userguide/managing-kube-proxy.html[kube-proxy], https://docs.aws.amazon.com/eks/latest/userguide/managing-coredns.html[coredns] or the https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html[AWS VPC CNI].
+The tight integration into the API and portal does make it easy to use and ensures version upgrade constraints can be detected ahead.
+Hashicorp AWS EKS module provides a resource https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_addon[aws_eks_addon] allowing deploy the add-ons along with the EKS cluster using the Kubernetes server-side apply feature.
+
+WARNING: Migrating to the Amazon EKS add-ons does require removing the eks-addon-manager component!
+
+=== Remove the eks-addon-manager component
+
+The eks-addon-manager component has the preconfiguration in the ArgoCD application not to prune anything in the case the application is going to be removed.
+This allows it just to remove the component and the applied manifests stay untouched on the cluster, remaining up and running in the last state.
+
+To remove the component by prefix the application with a `~`.
+[source,yaml]
+----
+applications:
+  - ~eks-addon-manager
+----
+
+After compiling the catalog, puhsing and refreshing the ArgoCD root application the component has been removed.
+
+=== Migration specific to EKS Kubernetes 1.19
+
+By adding the resource `aws_eks_addon` for `kube_proxy`, `coredns` and `vpc-cni` to the Terraform configuration the add-ons are going to be applied.
+The condition resolving conflicts set to `OVERWRITE` advises the EKS enforce apply changes in the case of conflicts.
+For the add-ons `kube_proxy`, `coredns` the right version was automatically choosen according the running Kubernetes version.
+The `vpc-cni` has been downgraded from the component version `v1.7.10` to `v1.7.5-eksbuild.1` without any visible impact to the workload.
+However since the AWS EKS recommendation is to use the https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html[newest VPC CNI version] for all the supported Kubernetes version override the version in the module does solve it.
+
+[source,terraform]
+----
+resource "aws_eks_addon" "kube_proxy" {
+  cluster_name      = var.cluster_name
+  addon_name        = "kube-proxy"
+  resolve_conflicts = "OVERWRITE"
+}
+
+resource "aws_eks_addon" "coredns" {
+  cluster_name      = var.cluster_name
+  addon_name        = "coredns"
+  resolve_conflicts = "OVERWRITE"
+}
+
+resource "aws_eks_addon" "vpc-cni" {
+  cluster_name      = var.cluster_name
+  addon_name        = "vpc-cni"
+  addon_version     = "v1.8.0-eksbuild.1"
+  resolve_conflicts = "OVERWRITE"
+}
+----
