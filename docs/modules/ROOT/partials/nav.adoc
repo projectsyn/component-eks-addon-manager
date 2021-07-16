@@ -1,2 +1,3 @@
 * xref:index.adoc[Home]
+* xref:how-tos/migrate-to-eks-add-ons.adoc[Migrate to Amazon EKS add-ons]
 * xref:references/parameters.adoc[Parameters]
