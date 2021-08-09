@@ -35,6 +35,10 @@ parameters:
           tag: 'v1.7.0-eksbuild.1'
         '1.19':
           tag: 'v1.8.0-eksbuild.1'
+        '1.20':
+          tag: 'v1.8.3-eksbuild.1'
+        '1.21':
+          tag: 'v1.8.3-eksbuild.1'
       kube-proxy:
         '1.17':
           tag: 'v1.17.9-eksbuild.1'
@@ -42,6 +46,10 @@ parameters:
           tag: 'v1.18.8-eksbuild.1'
         '1.19':
           tag: 'v1.19.6-eksbuild.2'
+        '1.20':
+          tag: '1.20.4-eksbuild.2'
+        '1.21':
+          tag: '1.21.2-eksbuild.2'
       aws-k8s-cni:
         '1.17':
           tag: 'v1.7.5'
@@ -52,3 +60,9 @@ parameters:
         '1.19':
           tag: 'v1.7.10'
           version: 'v1.7'
+        '1.20':
+          tag: 'v1.9.0'
+          version: 'v1.9'
+        '1.21':
+          tag: 'v1.9.0'
+          version: 'v1.9'
