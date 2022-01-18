@@ -1,0 +1,6 @@
+:global:
+  componentName: eks-addon-manager
+
+docs/antora.yml:
+  name: eks-addon-manager
+  title: eks-addon-manager
