@@ -1,8 +1,11 @@
 # ⚠️  Repo Archive Notice
 
 As of Jan 19, 2022, this component will no longer be updated.
+
 We recommend that you use the mechanisms provided by AWS to manage the EKS addons.
 See the [EKS documentation](https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html) for details.
+
+See our [migration how-to](./docs/modules/ROOT/pages/how-tos/migrate-to-eks-add-ons.adoc) for instructions to migrate the EKS addons to be managed through Terraform.
 
 # Commodore Component: eks-addon-manager
 
