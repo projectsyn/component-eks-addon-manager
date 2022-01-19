@@ -3,7 +3,7 @@ parameters:
     =_metadata:
       deprecated: True
       deprecation_notice: >-
-        See https://hub.syn.tools/eks-addon-manager/how-tos/migrate-to-eks-add-ons.html for instructions to migrate to the AWS managed EKS add-ons.
+        See https://github.com/projectsyn/component-eks-addon-manager/blob/477dbabfe3ab88426a4db6c43afcba7dd3fcf8b5/docs/modules/ROOT/pages/how-tos/migrate-to-eks-add-ons.adoc for instructions to migrate to the AWS managed EKS add-ons.
 
     # ResourceLocker objects must exist in the resource-locker namespace
     namespace: ${resource_locker:namespace}
