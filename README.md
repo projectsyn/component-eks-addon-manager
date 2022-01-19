@@ -1,3 +1,9 @@
+# ⚠️  Repo Archive Notice
+
+As of Jan 19, 2022, this component will no longer be updated.
+We recommend that you use the mechanisms provided by AWS to manage the EKS addons.
+See the [EKS documentation](https://docs.aws.amazon.com/eks/latest/userguide/eks-add-ons.html) for details.
+
 # Commodore Component: eks-addon-manager
 
 This is a [Commodore][commodore] Component to manage EKS addon versions.
